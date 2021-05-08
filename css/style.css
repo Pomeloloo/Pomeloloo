@@ -1,0 +1,152 @@
+@charset "UTF-8";
+/* 適用重整網頁時避免出現亂碼-html也要加 */
+  [v-cloak] {
+    display: none;
+ }
+  /* 共用 */
+  /* .theme--light.v-application{
+      background: #f2f2f2;
+  }
+  .theme--light.v-toolbar.v-sheet{
+      background-color: #f2f2f2;
+  } */
+  body, h1, h2, h3, h4, h5, h6{
+      font-family: "Raleway", "Arial", "sans-serif";
+  }
+  .theme--dark.v-toolbar.v-sheet{
+      background-color: #121212;
+  }
+  .text_justify{
+     text-align: justify;
+  }
+  .txtsize-18{
+     font-size: 18px !important; 
+  }
+  .txtsize-48{
+     font-size: 48px !important;
+  }
+  .txtsize-32{
+     font-size: 32px !important;
+  }
+  .img_div{
+      background-color: transparent;
+      width: 90%;
+      margin: 40px auto;
+      padding: 40px;
+  }
+   #job_skills,#desind_idea{
+    margin-top: -100px;
+    margin-bottom: 100px;
+    display: block;
+    height: 0;
+  }
+  /* 回到最上方 */
+  #gototop {
+     letter-spacing: 0px;
+     text-indent: 0px;
+     bottom: 200px;
+  }
+  #gototop .v-btn__content{
+     display: block;
+  }
+  /* 導航列 */
+  #nav_header{
+      position: fixed;
+      top: 0;
+      z-index: 202;
+      left: 0;
+      right:0;
+  }
+  #nav_header .v-input__slot{
+      margin-bottom: 0px;
+  }
+  #nav_header .v-messages{
+      min-height: 0px;
+  }
+  .theme--light.v-label,.theme--dark.v-label{
+      color: #78909C;
+  }
+  /* 手機導航列 */
+  #mobile_nav{
+      height: 70px !important;
+  }
+  #mobile_nav .v-toolbar__content{
+      height: 70px !important;
+      border-bottom: 2px solid #ddd;
+  }
+  /* 個人介紹 */
+  .self_intros{
+    width: 70% !important;
+    margin: 0 auto !important;
+    margin-top: -500px !important;
+  }
+  .parallax_mt{
+    margin-top: -320px;
+  }
+  .name_baseline{
+    border-bottom: 3px solid #EF6C00;
+    width: 15%;
+    border-radius: 5px;
+  }
+  /* 工作技能 */
+  .skill-text{
+    padding-left: 10px !important;
+    line-height: 22px;
+  }
+  .skill-text li{
+    margin-top: 10px;
+  }
+  /* 雛形設計 */
+  .txt-rwd{
+    box-shadow: none !important;
+    padding: 70px 0px;
+  }
+  /* 版權聲明 */
+  /* .copyright_div{
+    background-image: url(images/footer2.png);
+    background-position: bottom;
+    height:40px;
+    background-color:transparent;
+    line-height: 40px;
+  } */
+  .u-tag{
+    background-color:#000;
+    color:#fff;
+    display:inline-block;
+    padding-left:8px;
+    padding-right:8px;
+    text-align:center;
+  }
+  /* mobile版-頁尾選單 */
+  #footer_nav{
+      position: fixed;
+      bottom: 0;
+      z-index: 204;
+  }
+  @media only screen and (max-width: 960px) {
+    /* 共用 */
+    .img_div{
+      width: 100%;
+    }
+    /* 個人介紹 */
+    .self_intros{
+        width: 100% !important;
+    }
+    .parallax_mt{
+        margin-top: -350px;
+    }
+    #parallax_h{
+        height: 620px !important;
+    }
+    .self_btn{
+        width: 100%;
+    }
+    /* 雛形設計 */
+    .txt-rwd{
+        padding: 0px;
+    }
+    /* 版權聲明 */
+   .copyright_div{
+      margin-bottom: 56px;
+   }
+}
