@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,IE=IE11">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>U-space</title>
+    <!-- icon -->
+    <link href="css/MaterialDesign-Webfont-master/css/materialdesignicons.css" rel="stylesheet">
+    <!-- css -->
+    <link href="css/css.css" rel="stylesheet">
+    <link href="css/vuetify.min.css" rel="stylesheet">
+    <!-- IE 11瀏覽器相容設定 -->
+
+    <!-- js -->
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+    <script src="js/vuetify.js"></script>
+
+    <!-- 額外css -->
+    <style>
+    /* 適用重整網頁時避免出現亂碼-html也要加 */
+      [v-cloak] {
+        display: none;
+     }
+      /* 共用 */
+      /* .theme--light.v-application{
+          background: #f2f2f2;
+      }
+      .theme--light.v-toolbar.v-sheet{
+          background-color: #f2f2f2;
+      } */
+      body, h1, h2, h3, h4, h5, h6{
+          font-family: "Raleway", "Arial", "sans-serif";
+      }
+      .theme--dark.v-toolbar.v-sheet{
+          background-color: #121212;
+      }
+      .text_justify{
+         text-align: justify;
+      }
+      .txtsize-18{
+         font-size: 18px !important; 
+      }
+      .txtsize-48{
+         font-size: 48px !important;
+      }
+      .txtsize-32{
+         font-size: 32px !important;
+      }
+      #desind_idea .theme--light.v-sheet--outlined{
+          border:1px solid #ffc107;
+      }
+      #desind_idea a .v-card .v-list:hover{
+          background-color: oldlace;
+          transition:background-color .6s;
+         -moz-transition:background-color .6s;
+         -webkit-transition:background-color .6s;
+         -o-transition:background-color .6s;  
+      }
+      .img_div{
+          background-color: transparent;
+          width: 90%;
+          margin: 40px auto;
+          padding: 40px;
+      }
+      /* 導航列 */
+      #nav_header{
+          position: fixed;
+          top: 0;
+          z-index: 202;
+          left: 0;
+          right:0;
+      }
+      #nav_header .v-input__slot{
+          margin-bottom: 0px;
+      }
+      #nav_header .v-messages{
+          min-height: 0px;
+      }
+      .theme--light.v-label,.theme--dark.v-label{
+          color: #78909C;
+      }
+      /* 手機導航列 */
+      #mobile_nav{
+          height: 70px !important;
+      }
+      #mobile_nav .v-toolbar__content{
+          height: 70px !important;
+          border-bottom: 2px solid #ddd;
+      }
+      /* 個人介紹 */
+      .self_intros{
+        width: 70% !important;
+        margin: 0 auto !important;
+        margin-top: -500px !important;
+      }
+      .parallax_mt{
+        margin-top: -320px;
+      }
+      /* 工作技能 */
+      .skill-text{
+        padding-left: 10px !important;
+        line-height: 22px;
+      }
+      .skill-text li{
+        margin-top: 10px;
+      }
+      /* 雛形設計 */
+      .txt-rwd{
+        box-shadow: none !important;
+        padding: 70px 0px;
+      }
+      /* 版權聲明 */
+      .copyright_div{
+        background-image: url(images/footer2.png);
+        background-position: bottom;
+        height:40px;
+        background-color:transparent;
+        line-height: 40px;
+      }
+      .u-tag{
+        background-color:#000;
+        color:#fff;
+        display:inline-block;
+        padding-left:8px;
+        padding-right:8px;
+        text-align:center;
+      }
+      /* mobile版-頁尾選單 */
+      #footer_nav{
+          position: fixed;
+          bottom: 0;
+          z-index: 204;
+      }
+      @media only screen and (max-width: 960px) {
+        /* 共用 */
+        .img_div{
+          width: 100%;
+        }
+        /* 個人介紹 */
+        .self_intros{
+            width: 100% !important;
+        }
+        .parallax_mt{
+            margin-top: -350px;
+        }
+        #parallax_h{
+            height: 620px !important;
+        }
+        .self_btn{
+            width: 100%;
+        }
+        /* 雛形設計 */
+        .txt-rwd{
+            padding: 0px;
+        }
+        /* 版權聲明 */
+       .copyright_div{
+          margin-bottom: 56px;
+       }
+      }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <v-app>
+            <v-main>
+                <!-- 遮罩區 -->
+                <!-- <v-overlay :value="overlay" :z-index="zIndex"></v-overlay> -->
+                <!-- {{置頂導航選單列}} -->
+                <div id="nav_header" class="d-flex">
+                    <v-toolbar class="font-weight-bold" style="box-shadow: none;">
+                        <v-toolbar-title>
+                            <v-img src="images/logo.png"></v-img>
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items class="d-none d-md-flex">
+                            <v-btn text v-for="item in nav" :key="item.icon" class="blue-grey--text text--lighten-1" style="font-size: 1rem;">
+                                <v-icon v-text="item.icon" size="22"></v-icon>&nbsp;{{ item.text }}
+                            </v-btn>
+                        </v-toolbar-items>
+                        <div class="d-inline-flex justify-center align-stretch flex-no-wrap pa-3">
+                            <v-switch v-model="$vuetify.theme.dark" inset label="夜間模式" color="orange"></v-switch>
+                        </div>
+                    </v-toolbar>
+                </div>
+                <div class="d-sm-none">
+                  <!-- <v-app-bar color="blue-grey darken-3" dark> -->
+                    <!-- <v-toolbar-title>Mobile Menu</v-toolbar-title>
+                    <v-spacer></v-spacer> -->
+                    <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+                        <v-card>
+                            <v-toolbar id="mobile_nav" flat class="font-weight-bold">
+                                <v-toolbar-title>
+                                    <v-img src="images/logo.png"></v-img>
+                                </v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-toolbar-items>
+                                    <v-btn icon @click="dialog = false">
+                                        <v-icon>mdi-close</v-icon>
+                                    </v-btn>
+                                </v-toolbar-items>
+                            </v-toolbar>
+                            <v-list flat nav>
+                              <v-list-item-group v-model="selectedItem" color="primary" class="font-weight-bold">
+                                <v-list-item v-for="(item, index) in nav" :key="index" link color="orange">
+                                    <v-list-item-icon>
+                                        <v-icon v-text="item.icon"></v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title v-text="item.text"></v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                              </v-list-item-group>
+                            </v-list> 
+                        </v-card>
+                     </v-dialog>
+                </div>
+
+                <v-parallax dark src="images/b1.png" height="700" id="parallax_h">
+                    <v-row align="center" justify="center" class="parallax_mt">
+                        <v-col class="text-center" cols="12">
+                            <h1 class="display-1 font-weight-thin mb-4">
+                                Hello
+                            </h1>
+                            <h4 class="subheading">
+                             Here's who I am & what I do
+                            </h4>
+                        </v-col>
+                    </v-row>
+                </v-parallax>
+
+                <v-container class="mt-16">
+                    
+                    <!-- {{個人介紹區塊}} -->
+                    <!-- <v-card class="d-flex justify-center" style="width: 80%;margin: 0 auto;height: 500px;"> -->
+                        <v-row no-gutters class="self_intros">
+                            <v-col cols="12" sm="12" lg="5">
+                                <v-card class="mx-auto" height="100%" style="overflow: hidden;">
+                                    <div class="pt-5">
+                                        <v-img src="images/個人頭像.png" ></v-img>
+                                    </div>
+                                    <v-card-title class="mx-auto d-flex justify-center pt-5 pb-0">
+                                        <h1 class="font-weight-bold blue-grey--text text--lighten-1">U-Tzu</h1>
+                                    </v-card-title>
+                                    <div class="d-flex justify-center">
+                                        <h1 class="font-weight-bold blue-grey--text text--lighten-1">.LIN</h1>
+                                    </div>
+                                    <v-card-subtitle style="padding-top: 5px;">
+                                        <div class="mx-auto" outline style="border-bottom: 3px solid #EF6C00;width: 15%;border-radius: 5px;"></div>
+                                    </v-card-subtitle>
+                                </v-card>
+                            </v-col>
+                            <v-col cols="12" sm="12" lg="7">
+                                <v-card class="d-flex justify-center" tile height="100%">
+                                        <v-card-text class="pa-7 text-center">
+                                            <p class="display-2 text--primary font-weight-bold blue-grey--text">
+                                                <v-icon size="50" class="blue-grey--text text--lighten-1" style="padding-bottom: 10px;">mdi-head-lightbulb</v-icon><span class="blue-grey--text text--lighten-1">UI / UX</span> <span class="display-1 font-weight-bold blue-grey--text text--lighten-1">Designer</span>
+                                            </p>
+                                            <v-divider></v-divider>
+                                            <p class="text-justify pt-6 blue-grey--text text--lighten-2" style="font-size: 22px;letter-spacing:5px;line-height: 30px;">
+                                                  以少即是多（Less is more）的美感觀念，控制視覺層次，實現優化與用戶直觀的交互體驗，讓設計改善生活。
+                                            </p>
+                                            <div style="text-align: center;width: 100%;">
+                                                <v-btn v-for="item in self_btns" :key="item.text" class="ma-1 self_btn mt-3" outlined rounded x-large color="deep-orange lighten-2">
+                                                    <v-icon v-text="item.icon" size="22"></v-icon>&nbsp;{{ item.text }}
+                                                </v-btn>
+                                            </div>
+                                        </v-card-text>
+                                        
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    <!-- </v-card> -->
+                    <!-- {{工作經歷及技能}} -->
+                        <!-- 工作技能 -->
+                <section id="job_skills" class="pt-5">
+                <h1 class="txtsize-48 u-center grey--text text--darken-1 text-center"><b>工作相關技能</b></h1>
+                <p class="txtsize-18 u-center grey--text text--lighten-1 text-center">Relevant Skills</p>
+                <v-row>
+                   <v-col>
+                      <v-row justify="center">
+                        <v-col v-for="(item, i) in items" :key="i" cols="12" sm="12" md="4">
+                            <!-- <v-card :color="item.color" dark> -->
+                            <v-card>
+                                <div class="d-flex flex-no-wrap justify-space-between">
+                                    <div>
+                                        <v-card-title class="text-h5" v-text="item.title"></v-card-title>
+                        
+                                        <v-card-subtitle v-text="item.artist"></v-card-subtitle>
+                                    </div>
+                        
+                                    <v-avatar class="ma-3" size="125" tile>
+                                        <v-img :src="item.src"></v-img>
+                                    </v-avatar>
+                                </div>
+                                <v-card-actions>
+                                    <div class="orange--text font-weight-medium" text>
+                                        詳細內容
+                                    </div>
+                                
+                                    <v-spacer></v-spacer>
+                                
+                                    <v-btn v-if="item.title === '其他工具'" icon @click="show3 = !show3">
+                                        <v-icon>{{ show3 ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                                    </v-btn>
+                                    <v-btn v-if="item.title === '網頁框架'" icon @click="show2 = !show2">
+                                        <v-icon>{{ show2 ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                                    </v-btn>
+                                    <v-btn v-if="item.title === '繪圖軟體'" icon @click="show = !show">
+                                        <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                                    </v-btn>
+                                </v-card-actions>
+                                
+                                <v-expand-transition v-if="item.title === '其他工具'">
+                                    <div v-show="show3">
+                                        <v-divider></v-divider>
+                                        <v-card-text class="text_justify">
+                                            <ul class="skill-text">
+                                                <li>以VS code編輯器建立開發使用者介面，並隨時測試、修正程式碼。</li>
+                                                <li>更新檔案版本時，利用SVN版控系統與其他開發者共同協作專案，並搭配UI說明圖檔文件，與協作同仁說明介面調整方向及修改部分，減少來回溝通時間。</li>
+                                            </ul>
+                                        </v-card-text>
+                                    </div>
+                                </v-expand-transition>
+                                <v-expand-transition v-if="item.title === '網頁框架'">
+                                    <div v-show="show2">
+                                        <v-divider></v-divider>
+                                        <v-card-text class="text_justify">
+                                            <ul class="skill-text">
+                                                <li>與HTML、CSS搭配進行開發，應用內建UI框架及元件、CSS，實現介面風格一致性及響應式設計，讓介面可自適應多個瀏覽裝置，進行動態布局調整。</li>
+                                                <li>幫助開發夥伴提升產品體驗和開發效率、快速構建出風格統一的頁面，利於後端串接資料。</li>
+                                            </ul>
+                                        </v-card-text>
+                                    </div>
+                                </v-expand-transition>
+                                <v-expand-transition v-if="item.title === '繪圖軟體'">
+                                    <div v-show="show">
+                                        <v-divider></v-divider>
+                                        <v-card-text class="text_justify">
+                                            <ul class="skill-text">
+                                                <li>設計配置整體網站風格流暢性，定調相呼應的色彩，豐富視覺層次，構建使用者最佳瀏覽交互體驗。</li>
+                                                <li>以Prototype呈現頁面功能資訊架構，實作前，以開發者、使用者提出的反饋，釐清設計需求，整合意見，提升功能設計效率。</li>
+                                            </ul>
+                                        </v-card-text>
+                                    </div>
+                                </v-expand-transition>
+                            </v-card>
+                        </v-col>
+                      </v-row>
+                   </v-col>
+                </v-row>
+                </section>
+                        <!-- 工作經歷 -->
+                <section id="job_experience" class="pt-5">
+                    <h1 class="txtsize-48 grey--text text--darken-1"><b>工作經歷</b></h1>
+                    <p class="txtsize-18 grey--text text--lighten-1">Job Experience</p>
+                     <v-row justify="center" no-gutters class="mb-2">
+                        <v-col cols="12">
+                            <v-img src="images/timeline-bg.png" style="background-size: contain;">
+                            <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+                                <v-timeline-item v-for="(year, i) in years" :key="i" :color="year.color">
+                                    <template v-slot:opposite>
+                                        <span :class="`headline font-weight-bold ${year.color}--text`" v-text="year.year"></span>
+                                    </template>
+                                    <v-card class="elevation-2 py-4 font-weight-bold">
+                                        <v-chip :color="year.color" label text-color="white" v-text="year.tag">
+                                            <v-icon left>
+                                                mdi-label
+                                            </v-icon>
+                                            Tags
+                                        </v-chip>
+                                        <v-card-title class="headline">
+                                            <h2 :class="`headline font-weight-light ${year.color}--text`" v-text="year.title"></h2>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <ul>
+                                                <li v-for="item in year.txts">{{ item }}</li>
+                                            </ul>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-timeline-item>
+                            </v-timeline>
+                          </v-img>
+                        </v-col>
+                    </v-row>
+                </section>
+                    <!-- {{設計概念、發想}} -->
+                <section id="desind_idea" class="pt-5 text-center">
+                        <!-- 雛形設計 -->
+                    <h1 class="txtsize-48 u-center grey--text text--darken-1"><b>雛形設計</b></h1>
+                    <p class="txtsize-18 u-center grey--text text--lighten-1 mb-0" >Prototype Design</p>
+                    <!-- 設計的banner -->
+                    <v-row no-gutters>
+                        <v-col cols="12" sm="12" lg="7">
+                            <v-card class="mx-auto" height="100%" style="box-shadow: none;">
+                                <div class="pt-5">
+                                    <v-img src="images/overview-light.png"></v-img>
+                                </div>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" sm="12" lg="5" class="d-none d-md-flex text-center">
+                            <v-card class="mx-auto" height="100%" style="box-shadow: none;padding: 70px 0px;">
+                                <div class="pt-12">
+                                    <v-img src="images/txt-overview.png" style="width: 80%;"></v-img>
+                                </div>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <v-col cols="12" sm="12" lg="5" class="text-center">
+                            <v-card class="mx-auto txt-rwd" height="100%">
+                                <div class="pt-8">
+                                    <v-img src="images/txt-RWD.png" style="width: 100%;"></v-img>
+                                </div>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" sm="12" lg="7">
+                            <v-card class="mx-auto" height="100%" style="box-shadow: none;">
+                                <div class="pt-5">
+                                    <v-img src="images/RWD設計.png"></v-img>
+                                </div>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    
+                    
+                   </section>
+                </v-container>
+                
+                <section id="dark_mode" class="text-center">
+                    <h3 class="txtsize-48 u-center grey--text text--darken-1"><b>夜間模式</b></h3>
+                    <p class="txtsize-18 u-center grey--text text--lighten-1 font-weight-light">Overview-Dark</p>
+                    <v-row no-gutters class="d-none d-md-flex">
+                        <v-col cols="12">
+                            <v-img src="images/overview-dark.png"></v-img>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters class="d-sm-flex d-md-none">
+                        <v-col cols="12">
+                            <v-img src="images/overview-dark2.png"></v-img>
+                        </v-col>
+                    </v-row>
+                </section>
+                <!-- 雛形設計:wireframe -->
+                <v-row no-gutters>
+                    <v-col cols="12">
+                        <v-img src="images/wireframe.png" class="img_div"></v-img>
+                    </v-col>
+                </v-row>
+                <!-- {{感謝、版權聲明}} -->
+                <v-row justify="center" no-gutters>
+                    <v-col cols="12">
+                        <v-footer>
+                            <v-card class="flex text-center" flat style="background-color: transparent;width: 98%;">
+                                <v-card-title style="word-break:normal;padding: 10px;">
+                                    <v-card-text class="pa-0 pt-5" style="line-height: 35px;">
+                                        <h1 class="txtsize-32 grey--text text--darken-1"><b>Thank you for watching！</b></h1>
+                                    </v-card-text>
+                                    <v-card-text class="pt-3 grey--text text--darken-1">
+                                        <h4>Personal Portfolio Designed By <span class="u-tag"
+                                                style="background-color: #808080;">U-Tzu.</span></h4>
+                                    </v-card-text>
+                                </v-card-title>  
+                            </v-card>
+                        </v-footer>
+                        <div class="copyright_div text-center pa-0 font-weight-light">
+                            Copyright &copy; {{ new Date().getFullYear() }} — <strong>U-Tzu.</strong> All Rights Reserved
+                        </div>
+                    </v-col>
+                </v-row>
+                <!-- mobile版選單 -->
+                <v-bottom-navigation color="orange" grow id="footer_nav" class="d-sm-flex d-md-none">
+                    <v-btn>
+                        <span>首頁</span>
+                        <v-icon>mdi-home</v-icon>
+                    </v-btn>
+                    <v-btn>
+                        <span>技能/經歷</span>
+                        <v-icon>mdi-xml</v-icon>
+                    </v-btn>
+                    <v-btn>
+                        <span>作品/構想</span>
+                        <v-icon>mdi-widgets</v-icon>
+                    </v-btn>
+                    <v-btn @click="dialog = true">
+                        <span>選單</span>
+                        <v-icon>mdi-format-list-bulleted-square</v-icon>
+                    </v-btn>
+                </v-bottom-navigation>
+            </v-main>
+        </v-app>
+    </div>
+    <!-- vue.js區塊 -->
+    <script>
+        // 啓動 Vue 及 Vuetify
+       var vm = new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data:function() {
+                return {
+                    // 遮罩區
+                    overlay: false,
+                    zIndex:3,
+                    // 導航列
+                    dialog: false,
+                    selectedItem: 1,
+                    nav: [
+                        {
+                            icon: 'mdi-account-circle',
+                            text: '簡介',
+                            // title: 'Back to Home page',
+                            // active: true
+                        },
+                        {
+                            icon: 'mdi-xml',
+                            text: '工作技能＆經歷',
+                            link: "#job_skills"
+                            // title: 'About this demo',
+                            // active: false
+                        },
+                        {
+                            icon: 'mdi-widgets',
+                            text: '作品＆設計構想',
+                            // title: 'Some stuff that needs doing',
+                            // active: false
+                        },
+                    ],
+                    // 個人簡介：作品＆經歷
+                    self_btns: [
+                        {
+                            icon: 'mdi-xml',
+                            text: '工作技能＆經歷',
+                        },
+                        {
+                            icon: 'mdi-widgets',
+                            text: '作品＆設計構想',
+                        },
+                    ],
+                    // 工作技能更多說明
+                    show: false,
+                    show2: false,
+                    show3: false,
+                    items: [
+                        {
+                            // color: '#1F7087',
+                            src: 'images/繪圖工具.png',
+                            title: '繪圖軟體',
+                            artist: '文宣、logo影像編輯，專案實作 Prototype 設計規劃',
+                        },
+                        {
+                            // color: '#952175',
+                            src: 'images/網頁框架.png',
+                            title: '網頁框架',
+                            artist: '建立網站基本框架、RWD網頁切版、管理維護多個介面',
+                        },
+                        {
+                            // color: '#952175',
+                            src: 'images/其他工具.png',
+                            title: '其他工具',
+                            artist: '版本控制系統、網頁測試、修正、專案介面實作',
+                        },
+                    ],
+                    // 工作經歷
+                    years: [
+                        {
+                            color: 'cyan',
+                            year: '2021、在職中',
+                            tag: '目前任職公司',
+                            title: 'UI/UX設計師',
+                            txts: [
+                                '與業務、企劃、程式設計等相關人員配合，協同執行專案。',
+                                '協調其他網頁設計師，進行網站連結設計之相關事項。',
+                                '釐清需求並與後端工程師協作、配合開發網頁前端互動功能。',
+                                '設計與製作公司形象規範、網站視覺風格。',
+                                '負責網頁視覺介面與各種功能元件的佈局等視覺開發、修正。',
+                                '建立RWD用戶端互動平台，並進行維護。',
+                                '瀏覽器版面調整與相容性處理，配合專案進行測試與修改。',
+                                '負責內部網站系統介面更新與管理。',
+                            ]
+                        },
+                        {
+                            color: 'pink',
+                            year: '2018',
+                            tag: '紅谷資訊股份有限公司 (愛評網)',
+                            title: '中區企劃人員',
+                            txts: [
+                                '負責網站前後台功能及整體動線的企劃、執行與維護。',
+                                '規劃網路內容、服務及活動，並定期更新、維護及管理。',
+                                '負責網站內容活動產品上架、文案潤飾與執行。',
+                                '負責電子報、EDM及各種宣傳文案的設計、製作與發送。',
+                                '進行網路行銷及服務的成效追蹤。',
+                                '控管網站內容品質並進行審核、問題排除。',
+                            ]
+                        },
+                        {
+                            color: 'green',
+                            year: '2013',
+                            tag: '新綠地景觀設計有限公司',
+                            title: '行政會計專員',
+                            txts: [
+                                '一般文書類、行政事務處理，為內勤人員。',
+                                '處理公司相關帳務以及稅務問題。',
+                                '政府機關計畫案相關核銷事項。',
+                                '人事資料歸檔及建立。',
+                                '採買公司事務性用品。',
+                                '前往各社區訪查、現勘，協助活動相關事項。',
+                            ]
+                        },
+                    ],
+                    // 雛形介面PC、mobile版
+                    devices: [
+                        {
+                            color: 'blue',
+                            icon: 'mdi-desktop-mac-dashboard',
+                            // subtitle: 'Jan 20, 2014',
+                            title: 'PC 桌機版',
+                        },
+                        {
+                            color: 'amber',
+                            icon: 'mdi-tablet-cellphone',
+                            // subtitle: 'Jan 10, 2014',
+                            title: 'Mobile 移動裝置版',
+                        },
+                    ],
+                    // 雛形設計：輪播圖
+                    pcimgs: [
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+                        },
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+                        },
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+                        },
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+                        },
+                    ],
+                    mobileimgs: [
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+                        },
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+                        },
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+                        },
+                        {
+                            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+                        },
+                    ],
+                }
+            },
+        })
+    </script>
+</body>
+</html>
